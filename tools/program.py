@@ -694,11 +694,11 @@ def preprocess(is_train=False):
             config['Global']['use_clearml']) or 'clearml' in config:
         save_dir = config['Global']['save_model_dir']
         if "clearml" in config:
-            clearml_params = config['wandb']
+            clearml_params = config['clearml']
         else:
             clearml_params = dict()
         clearml_params.update({'save_dir': save_dir})
-        log_writer = ClearMLLogger(**wandb_params)
+        log_writer = ClearMLLogger(**clearml_params)
         loggers.append(log_writer)
     else:
         log_writer = None
