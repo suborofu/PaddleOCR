@@ -33,7 +33,7 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
-from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
+from ppocr.utils.loggers import VDLLogger, WandbLogger, ClearMLLogger, Loggers
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 
@@ -687,6 +687,18 @@ def preprocess(is_train=False):
             wandb_params = dict()
         wandb_params.update({'save_dir': save_dir})
         log_writer = WandbLogger(**wandb_params, config=config)
+        loggers.append(log_writer)
+    else:
+        log_writer = None
+    if ('use_clearml' in config['Global'] and
+            config['Global']['use_clearml']) or 'clearml' in config:
+        save_dir = config['Global']['save_model_dir']
+        if "clearml" in config:
+            clearml_params = config['wandb']
+        else:
+            clearml_params = dict()
+        clearml_params.update({'save_dir': save_dir})
+        log_writer = ClearMLLogger(**wandb_params)
         loggers.append(log_writer)
     else:
         log_writer = None

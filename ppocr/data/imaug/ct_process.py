@@ -19,7 +19,7 @@ import pyclipper
 import paddle
 
 import numpy as np
-import Polygon as plg
+import polygon as plg
 
 from PIL import Image
 import paddle.vision.transforms as transforms
